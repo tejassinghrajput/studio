@@ -59,6 +59,10 @@
   * {
     @apply border-border;
   }
+  /* Prevent horizontal scroll globally */
+  html, body {
+    @apply overflow-x-hidden;
+  }
   body {
     @apply bg-background text-foreground;
     font-family: var(--font-inter), sans-serif;

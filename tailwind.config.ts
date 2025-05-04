@@ -8,6 +8,24 @@ export default {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    // Add container configuration to control padding and centering
+    container: {
+      center: true, // Center container contents
+      padding: {
+        DEFAULT: '1rem', // Default padding (mobile)
+        sm: '2rem', // Padding for small screens and up
+        lg: '4rem', // Padding for large screens and up (adjust as needed)
+        xl: '5rem', // Padding for extra-large screens and up
+        '2xl': '6rem', // Padding for 2xl screens and up
+      },
+      screens: { // Define breakpoints for max-width if needed, otherwise uses Tailwind defaults
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px',
+      },
+    },
   	extend: {
   		colors: {
             // Map theme colors to CSS variables managed by ThemeProvider
