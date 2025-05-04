@@ -14,24 +14,17 @@ type ExperienceItem = {
 };
 
 const experienceData: ExperienceItem[] = [
-   {
-    title: "Business Manager",
-    company: "SaaS Startup",
-    duration: "Jan 2024 – Present",
-    description: "Oversaw operations, handled customer lifecycle, and contributed to backend logic and workflows in a small SaaS business.",
-    icon: Rocket,
-  },
   {
     title: "Backend Developer",
     company: "ShipGlobal",
-    duration: "Nov 2023 – Present",
-    description: "Building scalable backend services with CodeIgniter 4. Created Kafka-based pipelines for ingesting SQL order data into Elasticsearch. Improved system performance by optimizing queries and microservices.",
-    icon: Briefcase,
+    duration: "Sept 2024 – Present",
+    description: "Building scalable backend services with CodeIgniter 4. Resolving production issues and handling various projects to improve system performance and stability.",
+    icon: Rocket,
   },
   {
     title: "SDE Intern",
     company: "Naest",
-    duration: "May 2023 – Jul 2023",
+    duration: "May 2024 – Jul 2024",
     description: "Worked on both frontend and backend components using HTML, CSS, JavaScript, and PHP. Contributed to a real-world product in a fast-paced startup environment.",
     icon: GraduationCap,
   },
@@ -60,7 +53,7 @@ export function ExperienceSection() {
         Professional Experience
       </motion.h2>
 
-       {/* Perspective wrapper */}
+      {/* Perspective wrapper */}
       <div className="relative max-w-3xl mx-auto" style={{ perspective: '1200px' }}>
         {/* Vertical line */}
         <div className="absolute left-6 top-0 h-full w-0.5 bg-border -z-10" aria-hidden="true"></div> {/* Ensure line is behind cards */}
