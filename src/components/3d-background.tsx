@@ -1,11 +1,23 @@
 'use client';
 
-import React, { Suspense, useRef, useState } from 'react'; // Import useState
-import { Canvas, useFrame } from '@react-three/fiber';
+import React, { Suspense } from 'react';
+import { Canvas } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
-import * as THREE from 'three';
+import * as THREE from 'three'; // Keep THREE if needed later, but simplify component first
 
+// Simplified component to test core R3F functionality
+function SimpleBox() {
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="#38BDF8" /> {/* Use accent color */}
+    </mesh>
+  );
+}
+
+// Original Stars component - commented out for testing
+/*
 function Stars(props: any) {
   const ref = useRef<THREE.Points>(null!);
   // Use useState here, ensure it's imported
@@ -23,7 +35,7 @@ function Stars(props: any) {
       <Points ref={ref} positions={sphere} stride={3} frustumCulled={false} {...props}>
         <PointMaterial
           transparent
-          color="#61dafb" // Use accent color from theme (approximate HSL 203 92% 60%)
+          color="#38BDF8" // Use accent color from theme
           size={0.004} // Smaller points
           sizeAttenuation={true}
           depthWrite={false}
@@ -32,13 +44,17 @@ function Stars(props: any) {
     </group>
   );
 }
+*/
 
 export function Background3D() {
   return (
     <div className="fixed inset-0 -z-10"> {/* Ensure it stays behind content */}
-      <Canvas camera={{ position: [0, 0, 1] }}>
+      <Canvas camera={{ position: [0, 0, 5] }}> {/* Adjusted camera for box */}
+        <ambientLight intensity={0.8} /> {/* Added ambient light */}
+        <pointLight position={[10, 10, 10]} intensity={1} /> {/* Added point light */}
         <Suspense fallback={null}>
-          <Stars />
+           {/* <Stars /> */} {/* Temporarily replace Stars with SimpleBox */}
+          <SimpleBox />
         </Suspense>
       </Canvas>
        {/* Gradient Overlay for depth */}
