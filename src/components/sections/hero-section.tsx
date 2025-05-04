@@ -1,13 +1,14 @@
 // src/components/sections/hero-section.tsx
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useContext } from 'react'; // Import useContext
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Mail, FileText } from 'lucide-react';
 import { LaptopMinimal } from 'lucide-react'; // Using LaptopMinimal for a dev theme
 import Link from 'next/link'; // Import Link
 import { cn } from '@/lib/utils'; // Import cn
+import { AppStateContext } from '@/context/app-state-context'; // Import context
 
 // Animation variants remain the same
 const textVariants = {
@@ -57,27 +58,38 @@ const scrollToSection = (id: string) => {
 
 
 export function HeroSection() {
-  const fullText = "Hi, I am Tejhas Kumar Singh.";
+  const fullText = "Hi, I am Tejas Kumar Singh."; // Updated name
   const [displayedText, setDisplayedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
+  const { isPreloaderFinished } = useContext(AppStateContext); // Get preloader state from context
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
 
   // Typewriter effect logic
   useEffect(() => {
+     // Only start typing if the preloader is finished
+     if (!isPreloaderFinished) {
+       // Set initial state before preloader finishes if needed
+       setDisplayedText('');
+       setShowCursor(true); // Keep cursor visible initially
+       return;
+     };
+
     let index = 0;
+    // Start cursor visible when typing starts
+    setShowCursor(true);
     const typingInterval = setInterval(() => {
       if (index < fullText.length) {
         setDisplayedText((prev) => prev + fullText.charAt(index));
         index++;
       } else {
         clearInterval(typingInterval);
-        // Optionally hide cursor after typing finishes, or keep it blinking
-         // setShowCursor(false); // Example: hide cursor
+        // Hide cursor after typing finishes
+         setShowCursor(false); // Hide cursor on completion
       }
     }, 80); // Adjust typing speed (milliseconds per character)
 
     return () => clearInterval(typingInterval); // Cleanup on unmount
-  }, []); // Empty dependency array ensures it runs only once on mount
+  }, [isPreloaderFinished]); // Rerun effect when preloader state changes
 
   // Blinking cursor effect logic (using CSS is more performant)
   // We'll use CSS for the blinking
@@ -85,24 +97,25 @@ export function HeroSection() {
   return (
     <section
       id="home" // Add ID for navigation
-      className="min-h-screen flex items-center pt-16 md:pt-20 pb-20 md:pb-32 bg-gradient-to-br from-background/50 via-transparent to-slate-900/30 relative overflow-hidden" // Adjusted padding-top and background opacity
+      className="min-h-screen flex items-center pt-24 md:pt-32 pb-20 md:pb-32 bg-gradient-to-br from-background/50 via-transparent to-slate-900/30 relative overflow-hidden" // Adjusted padding-top
     >
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         {/* Left Text Content */}
         <motion.div
           initial="hidden"
-          animate="visible"
+          // Animate only when preloader is done
+          animate={isPreloaderFinished ? "visible" : "hidden"}
           variants={{}} // Container variant if needed
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
-          {/* Custom Typewriter Heading */}
+          {/* Custom Typewriter Heading - Removed fixed height for responsiveness */}
           <h1
-             className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md h-24 md:h-32 flex items-center" // Fixed height for typing area, flex to align cursor
+             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md min-h-[3em] flex items-center flex-wrap" // Use min-height, allow wrap
            >
-             <span>{displayedText}</span>
+             <span className="mr-1">{displayedText}</span> {/* Add margin to separate cursor */}
              {/* Blinking Cursor Span - styled with CSS */}
              <span className={cn(
-               "inline-block w-1 md:w-1.5 h-10 md:h-14 bg-primary ml-1 animate-blink",
+               "inline-block w-1 md:w-1.5 h-10 md:h-12 lg:h-14 bg-primary animate-blink", // Adjusted height for different sizes
                !showCursor && "hidden" // Hide if needed based on state
              )}></span>
           </h1>
@@ -118,18 +131,22 @@ export function HeroSection() {
 
           {/* Animated Subheadline */}
           <motion.div
-             className="text-lg md:text-xl text-muted-foreground mb-8 h-16 md:h-12 overflow-hidden" // Fixed height to prevent layout shift
+             className="text-lg md:text-xl text-muted-foreground mb-8 min-h-[3em]" // Use min-height
              custom={2} // Use index 2 for delay calculation
              variants={textVariants}
            >
-            <motion.span
-              initial={{ y: '100%' }}
-              animate={{ y: '0%' }}
-              transition={{ delay: 1.5 + (fullText.length * 0.08), duration: 0.7, ease: 'circOut' }} // Delay slightly more, considering typing time
-              className="inline-block"
-            >
-              {subheadlineText}
-            </motion.span>
+             {/* Conditionally render span only when preloader is finished to avoid layout shift */}
+            {isPreloaderFinished && (
+                 <motion.span
+                   initial={{ y: '100%' }}
+                   animate={{ y: '0%' }}
+                   transition={{ delay: 1.5 + (fullText.length * 0.08), duration: 0.7, ease: 'circOut' }} // Delay slightly more, considering typing time
+                   className="inline-block"
+                 >
+                   {subheadlineText}
+                 </motion.span>
+            )}
+
           </motion.div>
 
           <motion.div
@@ -155,7 +172,8 @@ export function HeroSection() {
         <motion.div
           className="hidden md:flex justify-center items-center z-10" // Ensure illustration is above 3D background
           initial="hidden"
-          animate="visible"
+          // Animate only when preloader is done
+          animate={isPreloaderFinished ? "visible" : "hidden"}
           variants={illustrationVariants}
         >
           {/* Replace with Lottie or SVG if available */}

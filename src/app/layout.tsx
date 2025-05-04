@@ -8,7 +8,7 @@ import { FooterSection } from '@/components/sections/footer-section';
 import { ScrollToTopButton } from '@/components/scroll-to-top';
 import { ThemeProvider } from '@/context/theme-context'; // Import ThemeProvider
 import { Preloader } from '@/components/preloader'; // Import Preloader
-
+import { AppStateProvider } from '@/context/app-state-context'; // Import AppStateProvider
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -52,20 +52,22 @@ export default function RootLayout({
           firaCode.variable
         )}
       >
-        {/* Preloader will cover content initially */}
-        <Preloader />
-        <ThemeProvider> {/* Wrap content with ThemeProvider */}
-          <Navbar />
-           {/* Ensure main content area doesn't have horizontal padding issues */}
-          <div className="relative z-10 flex-grow w-full"> {/* Ensure content has z-index and takes full width */}
-            <main className="flex-grow w-full"> {/* Ensure main takes full width */}
-              {children}
-            </main>
-            <FooterSection />
-          </div>
-          <ScrollToTopButton />
-          <Toaster />
-        </ThemeProvider>
+        <AppStateProvider> {/* Wrap with AppStateProvider */}
+           {/* Preloader gets onLoaded from AppStateProvider's context */}
+          <Preloader />
+          <ThemeProvider> {/* Wrap content with ThemeProvider */}
+            <Navbar />
+             {/* Ensure main content area doesn't have horizontal padding issues */}
+            <div className="relative z-10 flex-grow w-full"> {/* Ensure content has z-index and takes full width */}
+              <main className="flex-grow w-full"> {/* Ensure main takes full width */}
+                {children}
+              </main>
+              <FooterSection />
+            </div>
+            <ScrollToTopButton />
+            <Toaster />
+          </ThemeProvider>
+        </AppStateProvider>
       </body>
     </html>
   );
