@@ -1,3 +1,4 @@
+
 // src/components/sections/hero-section.tsx
 "use client";
 
@@ -62,7 +63,6 @@ export function HeroSection() {
   const headlineText = "Hi, I am Tejas Kumar Singh.";
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
 
-  // No longer need typewriter effect logic
 
   return (
     <section
@@ -78,9 +78,9 @@ export function HeroSection() {
           variants={{}} // Container variant if needed
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
-          {/* Direct Heading Rendering - Removed min-height */}
+          {/* Direct Heading Rendering */}
           <motion.h1
-             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md" // Removed min-h-[3em]
+             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md"
              custom={0} // Use index 0 for delay calculation
              variants={textVariants}
            >
@@ -117,13 +117,15 @@ export function HeroSection() {
 
           {/* Part 3: Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4" // Buttons stack vertically on small screens, horizontally on larger
+            className="flex flex-col sm:flex-row gap-4 mt-6" // Add margin-top for spacing
             custom={3} // Use index 3 for delay calculation
             variants={textVariants}
           >
-            <Button size="lg" variant="outline" className="hover-glow border-accent text-accent hover:bg-accent hover:text-accent-foreground">
-              <FileText className="mr-2 h-5 w-5" /> View Resume
-            </Button>
+             <Button size="lg" variant="outline" asChild className="hover-glow border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+               <Link href="https://drive.google.com/file/d/1VrGSj8AGuG2tlM-84jrLxTdS0UscqJFa/view?usp=sharing" target="_blank" rel="noopener noreferrer">
+                 <FileText className="mr-2 h-5 w-5" /> View Resume
+               </Link>
+             </Button>
             {/* Update Contact Me button to scroll to contact section */}
              <Button
                size="lg"

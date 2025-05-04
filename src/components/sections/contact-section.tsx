@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from 'framer-motion';
@@ -19,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast'; // Use the toast hook
 import { Github, Linkedin, Mail, FileText } from 'lucide-react';
 import { SectionWrapper } from '@/components/section-wrapper';
-import { Card } from '@/components/ui/card'; // Import Card component
+import { Card } from '@/components/ui/card';
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -103,22 +104,22 @@ export function ContactSection() {
           <div className="space-y-4">
              <h3 className="text-xl font-semibold text-foreground mb-3">Find me on:</h3>
              <div className="flex items-center space-x-6">
-                <Link href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
+                <Link href="https://www.linkedin.com/in/tejas-kumar-singh-8531b1248/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
                     <Linkedin className="h-7 w-7" />
                     <span className="sr-only">LinkedIn</span>
                 </Link>
-                 <Link href="#" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
+                 <Link href="https://github.com/tejassinghrajput" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
                     <Github className="h-7 w-7" />
                      <span className="sr-only">GitHub</span>
                 </Link>
-                 <Link href="mailto:youremail@example.com" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
+                 <Link href="mailto:singhtejas0001@gmail.com" className="text-muted-foreground hover:text-accent transition-colors hover-glow p-2 rounded-full">
                     <Mail className="h-7 w-7" />
                      <span className="sr-only">Email</span>
                 </Link>
              </div>
             <div className="pt-4">
                <Button variant="link" asChild className="text-accent hover:text-hover-glow p-0 h-auto">
-                  <Link href="#">
+                  <Link href="https://drive.google.com/file/d/1VrGSj8AGuG2tlM-84jrLxTdS0UscqJFa/view?usp=sharing" target="_blank" rel="noopener noreferrer">
                     <FileText className="h-5 w-5 mr-2"/> Download Resume
                   </Link>
                </Button>
