@@ -1,3 +1,4 @@
+
 import type { SVGProps } from 'react';
 import {
   LucideProps,
@@ -34,6 +35,7 @@ import {
   Search,
   Palette, // Added for PHP
 } from 'lucide-react';
+import { cn } from "@/lib/utils"; // Import cn utility
 
 // Reusable Icon Props
 interface IconProps extends LucideProps {
