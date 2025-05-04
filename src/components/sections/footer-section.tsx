@@ -15,7 +15,7 @@ export function FooterSection() {
       transition={{ duration: 0.5, delay: 0.2 }} // Slight delay after content load
     >
       <div className="container mx-auto px-4 text-center text-muted-foreground text-sm">
-        © {currentYear} Tejas Kumar Singh. Crafted with Next.js & Tailwind CSS.
+        © {currentYear} Tejas Kumar Singh.
       </div>
     </motion.footer>
   );
