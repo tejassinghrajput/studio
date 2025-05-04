@@ -7,9 +7,9 @@ import Image from 'next/image'; // Import Image component
 import { Code, Briefcase, Users, Target } from 'lucide-react'; // Import relevant icons
 
 const stats = [
-  { icon: Code, text: "2+ years dev experience" },
-  { icon: Briefcase, text: "Backend + Business Hybrid" },
-  { icon: Users, text: "SaaS Ops & Architecture" },
+  { icon: Code, text: "7+ Months dev experience" },
+  { icon: Briefcase, text: "Backend + DSA Expertise" },
+  { icon: Users, text: "Software Operations & Architecture" },
   { icon: Target, text: "Focus on Scalability" },
 ];
 
@@ -66,13 +66,13 @@ export function AboutSection() {
            viewport={{ once: true, amount: 0.2 }}
         >
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
-            I'm a final-year BTech CSE student blending <strong className="text-foreground font-medium">backend development skills</strong> with hands-on experience in <strong className="text-foreground font-medium">SaaS operations and business management</strong>. My journey sits at the exciting intersection of technology and strategic execution.
+            I'm a final-year BTech CSE student combining <strong className="text-foreground font-medium">backend engineering expertise</strong> with real-world involvement in <strong className="text-foreground font-medium">software delivery and operational planning</strong>. My path thrives where technology meets thoughtful execution.
           </p>
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
-            Currently at <strong className="text-accent">ShipGlobal</strong>, I engineer and maintain robust backend services using CodeIgniter 4, leveraging tools like <strong className="text-foreground font-medium">Kafka</strong> and <strong className="text-foreground font-medium">Elasticsearch</strong> for efficient, real-time data integration. Previously, my internship at <strong className="text-accent">Naest</strong> provided foundational experience in full-stack development within a dynamic startup setting.
+            At <strong className="text-accent">ShipGlobal</strong>, I design and maintain reliable backend systems using CodeIgniter 4, focusing on clean architecture and performance optimization. Earlier, I interned at <strong className="text-accent">Naest</strong>, where I worked across the full stack in a fast-paced, product-driven environment.
           </p>
           <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
-            Beyond coding, I actively manage business workflows in a SaaS startup, bridging the gap between technical implementation and product strategy. I am passionate about building <strong className="text-foreground font-medium">scalable, business-focused software solutions</strong>.
+            Outside of development, I contribute to process coordination and technical planning, helping align product vision with engineering execution. I'm deeply committed to building <strong className="text-foreground font-medium">scalable, user-driven digital solutions</strong>.
           </p>
         </motion.div>
       </div>

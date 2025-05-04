@@ -10,7 +10,7 @@ import {
   JavaIcon, PythonIcon, PHPIcon, CppIcon, SQLIcon, JSIcon, // Language Icons
   CodeIgniterIcon, FastAPIIcon, ReactIcon, NodeJSIcon, FlaskIcon, // Framework Icons
   DockerIcon, GitIcon, TravisCIIcon, GCPIcon, VSCodeIcon, // Tool Icons
-  PostgreSQLIcon, MySQLIcon, KafkaIcon, ElasticsearchIcon, RestAPIIcon // Database & API Icons
+  MongoDBIcon, MySQLIcon, KafkaIcon, ElasticsearchIcon, RestAPIIcon // Database & API Icons
 } from '@/components/icons/tech-icons'; // Import updated tech icons
 import { cn } from '@/lib/utils'; // Import cn
 
@@ -55,7 +55,6 @@ const skillsData: SkillCategory[] = [
     items: [
         { name: "Docker", icon: DockerIcon },
         { name: "Git", icon: GitIcon },
-        { name: "TravisCI", icon: TravisCIIcon },
         { name: "Google Cloud (GCP)", icon: GCPIcon },
         { name: "VS Code", icon: VSCodeIcon }
       ],
@@ -64,7 +63,7 @@ const skillsData: SkillCategory[] = [
     title: "Databases & APIs",
     icon: DatabaseIcon, // Use aliased import
     items: [
-        { name: "PostgreSQL", icon: PostgreSQLIcon },
+        { name: "MondoDB", icon: MongoDBIcon },
         { name: "MySQL", icon: MySQLIcon },
         { name: "REST APIs", icon: RestAPIIcon },
         { name: "Apache Kafka", icon: KafkaIcon },

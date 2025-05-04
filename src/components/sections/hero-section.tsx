@@ -61,7 +61,7 @@ const scrollToSection = (id: string) => {
 export function HeroSection() {
   const { isPreloaderFinished } = useContext(AppStateContext); // Get preloader state from context
   const headlineText = "Hi, I am Tejas Kumar Singh.";
-  const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
+  const subheadlineText = "Engineering scalable backend systems, secure APIs, and responsive frontends for seamless full-stack solutions.";
 
 
   return (
@@ -93,7 +93,7 @@ export function HeroSection() {
             custom={1} // Use index 1 for delay calculation
             variants={textVariants}
           >
-            Backend Developer | SaaS Business Manager
+            Backend Developer
           </motion.p>
 
           {/* Part 2: Specialization */}

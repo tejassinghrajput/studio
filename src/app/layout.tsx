@@ -29,8 +29,8 @@ const firaCode = Fira_Code({
 });
 
 export const metadata: Metadata = {
-  title: 'Tejas Kumar Singh | Backend Developer & SaaS Business Manager',
-  description: 'Portfolio of Tejas Kumar Singh, specializing in scalable backend systems, business-focused software, and secure APIs.',
+  title: 'Tejas Kumar Singh | Backend Developer',
+  description: 'Portfolio of Tejas Kumar Singh, Engineering scalable backend systems, secure APIs, and responsive frontends for seamless full-stack solutions.',
   viewport: 'width=device-width, initial-scale=1, maximum-scale=1', // Ensure viewport prevents scaling
 };
 
