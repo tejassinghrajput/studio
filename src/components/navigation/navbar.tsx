@@ -8,7 +8,8 @@ import { Menu, X, Code } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet"; // Added SheetTitle
+import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
+import { ThemeSwitcher } from "@/components/theme-switcher"; // Import ThemeSwitcher
 
 type NavItem = {
   href: string; // Now represents the section ID
@@ -50,29 +51,34 @@ export function Navbar() {
     setIsOpen(false); // Close mobile menu on link click
   };
 
-  // Handle scroll to update active link
+  // Handle scroll to update active link and navbar background
   React.useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 10);
+       // Check if window is defined (avoid SSR errors)
+       if (typeof window !== 'undefined') {
+          setIsScrolled(window.scrollY > 10);
 
-      let currentSection = "#home"; // Default to home
-      const sections = navItems.map(item => document.getElementById(item.href.substring(1)));
+          let currentSection = "#home"; // Default to home
+          const sections = navItems.map(item => document.getElementById(item.href.substring(1)));
 
-      sections.forEach((section) => {
-        if (section) {
-          const sectionTop = section.offsetTop - 150; // Adjust offset as needed
-          if (window.scrollY >= sectionTop) {
-            currentSection = `#${section.id}`;
-          }
-        }
-      });
-      setActiveSection(currentSection);
+          sections.forEach((section) => {
+            if (section) {
+              const sectionTop = section.offsetTop - 150; // Adjust offset as needed
+              if (window.scrollY >= sectionTop) {
+                currentSection = `#${section.id}`;
+              }
+            }
+          });
+          setActiveSection(currentSection);
+       }
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial check
-
-    return () => window.removeEventListener("scroll", handleScroll);
+     // Check if window is defined before adding event listener
+     if (typeof window !== 'undefined') {
+        window.addEventListener("scroll", handleScroll);
+        handleScroll(); // Initial check
+        return () => window.removeEventListener("scroll", handleScroll);
+     }
   }, []);
 
 
@@ -102,7 +108,7 @@ export function Navbar() {
           <span className="sm:hidden">TKS</span> {/* Short name for smaller screens */}
         </button>
 
-        {/* Desktop Navigation */}
+        {/* Desktop Navigation & Theme Switcher */}
         <div className="hidden md:flex items-center space-x-1">
           {navItems.map((item) => (
             <Button
@@ -117,10 +123,12 @@ export function Navbar() {
               {item.label}
             </Button>
           ))}
+          <ThemeSwitcher /> {/* Add ThemeSwitcher here */}
         </div>
 
-        {/* Mobile Navigation Trigger */}
-        <div className="md:hidden">
+        {/* Mobile Navigation Trigger & Theme Switcher */}
+        <div className="md:hidden flex items-center gap-2"> {/* Use flex container */}
+          <ThemeSwitcher /> {/* Add ThemeSwitcher for mobile */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="text-foreground">
@@ -129,10 +137,8 @@ export function Navbar() {
               </Button>
             </SheetTrigger>
             <SheetContent side="right" className="w-[280px] bg-card border-l border-border p-6 flex flex-col">
-              {/* Mobile Menu Header */}
+               <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
-                  {/* Add SheetTitle for accessibility */}
-                 <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
                   <button onClick={() => scrollToSection("#home")} className="flex items-center gap-2 text-lg font-bold text-foreground" >
                       <Code className="h-6 w-6 text-accent" />
                       Tejas K. Singh
@@ -143,8 +149,7 @@ export function Navbar() {
                   </Button>
                </div>
 
-               {/* Mobile Menu Links */}
-              <div className="flex flex-col space-y-3">
+               <div className="flex flex-col space-y-3">
                 {navItems.map((item) => (
                   <Button
                     key={item.href}

@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter, Fira_Code } from 'next/font/google';
-// Removed dynamic import related to 3D background
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
-import { Navbar } from '@/components/navigation/navbar'; // Import Navbar
-import { FooterSection } from '@/components/sections/footer-section'; // Import Footer
-import { ScrollToTopButton } from '@/components/scroll-to-top'; // Import ScrollToTopButton
-// Removed import for DynamicBackgroundLoader
+import { Navbar } from '@/components/navigation/navbar';
+import { FooterSection } from '@/components/sections/footer-section';
+import { ScrollToTopButton } from '@/components/scroll-to-top';
+import { DynamicBackgroundLoader } from '@/components/dynamic-background-loader'; // Import the loader
+import { ThemeProvider } from '@/context/theme-context'; // Import ThemeProvider
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -41,22 +41,24 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          'antialiased flex flex-col min-h-screen relative bg-background', // Ensure background color is set
+          'antialiased flex flex-col min-h-screen relative bg-background',
           spaceGrotesk.variable,
           inter.variable,
           firaCode.variable
         )}
       >
-        {/* Removed DynamicBackgroundLoader */}
-        <Navbar /> {/* Add Navbar */}
-        <div className="relative z-10 flex-grow"> {/* Ensure content is above potential background layers */}
-          <main className="flex-grow"> {/* Main content area */}
-            {children}
-          </main>
-          <FooterSection /> {/* Add Footer */}
-        </div>
-        <ScrollToTopButton /> {/* Add ScrollToTopButton globally */}
-        <Toaster />
+        <ThemeProvider> {/* Wrap content with ThemeProvider */}
+          <DynamicBackgroundLoader /> {/* Add 3D background loader */}
+          <Navbar />
+          <div className="relative z-10 flex-grow"> {/* Ensure content is above background */}
+            <main className="flex-grow">
+              {children}
+            </main>
+            <FooterSection />
+          </div>
+          <ScrollToTopButton />
+          <Toaster />
+        </ThemeProvider>
       </body>
     </html>
   );

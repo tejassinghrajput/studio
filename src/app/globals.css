@@ -4,48 +4,44 @@
 
 @layer base {
   :root {
-    --background: 217 33% 11%; /* #0F172A */
-    --foreground: 210 40% 98%; /* #F8FAFC */
+    /* --- Managed by ThemeProvider --- */
+    /* Color variables will be dynamically injected here */
 
-    --card: 215 39% 17%; /* #1E293B */
-    --card-foreground: 210 40% 98%; /* #F8FAFC */
+    /* --- Static Variables --- */
+    --radius: 0.5rem; /* Keep radius */
 
-    --popover: 215 39% 17%; /* #1E293B */
-    --popover-foreground: 210 40% 98%; /* #F8FAFC */
-
-    --primary: 203 92% 60%; /* #38BDF8 */
-    --primary-foreground: 217 33% 11%; /* #0F172A - High contrast */
-
-    --secondary: 215 39% 17%; /* #1E293B */
-    --secondary-foreground: 210 40% 98%; /* #F8FAFC */
-
-    --muted: 215 39% 17%; /* #1E293B */
-    --muted-foreground: 215 16% 65%; /* #94A3B8 */
-
-    --accent: 203 92% 60%; /* #38BDF8 */
-    --accent-foreground: 217 33% 11%; /* #0F172A */
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 98%;
-
-    --border: 215 39% 17%; /* #1E293B */
-    --input: 215 39% 17%; /* #1E293B */
-    --ring: 203 92% 60%; /* #38BDF8 */
-
-    --radius: 0.5rem;
-
-    /* Custom hover glow color */
-    --hover-glow: 200 95% 76%; /* #7DD3FC */
-
-    /* Chart colors */
-    --chart-1: 203 92% 60%; /* Primary */
-    --chart-2: 200 95% 76%; /* Hover Glow */
-    --chart-3: 210 40% 98%; /* Foreground */
-    --chart-4: 215 16% 65%; /* Muted Foreground */
-    --chart-5: 217 33% 11%; /* Background - For contrast if needed */
+    /*
+    Removed hardcoded HSL values.
+    These will be set by ThemeProvider:
+    --background
+    --foreground
+    --card
+    --card-foreground
+    --popover
+    --popover-foreground
+    --primary
+    --primary-foreground
+    --secondary
+    --secondary-foreground
+    --muted
+    --muted-foreground
+    --accent
+    --accent-foreground
+    --destructive
+    --destructive-foreground
+    --border
+    --input
+    --ring
+    --hover-glow
+    --chart-1
+    --chart-2
+    --chart-3
+    --chart-4
+    --chart-5
+    */
   }
 
-  /* No .dark class needed as dark mode is default */
+  /* No .dark class needed if default is dark and managed by HSL */
 }
 
 @layer base {
@@ -64,7 +60,7 @@
      font-family: var(--font-fira-code), monospace;
   }
 
-  /* Apply hover glow effect */
+  /* Apply hover glow effect using the dynamic variable */
   .hover-glow {
     @apply transition-all duration-300;
   }
@@ -76,7 +72,7 @@
      @apply transition-all duration-300;
   }
    .hover-border-glow:hover {
-    border-color: hsl(var(--hover-glow));
+    border-color: hsl(var(--hover-glow)); /* Use hover-glow for border too */
    }
 
 }
