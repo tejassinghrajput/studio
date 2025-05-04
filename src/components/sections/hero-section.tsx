@@ -120,18 +120,18 @@ export function HeroSection() {
              )}></span>
           </h1>
 
-          {/* Rest of the content with staggered animations */}
+          {/* Part 1: Role Description */}
           <motion.p
-            className="text-xl md:text-2xl text-muted-foreground mb-2"
+            className="text-xl md:text-2xl text-muted-foreground mb-2" // Keep mb-2 for spacing below this line
             custom={1} // Use index 1 for delay calculation
             variants={textVariants}
           >
             Backend Developer | SaaS Business Manager
           </motion.p>
 
-          {/* Animated Subheadline */}
-          <motion.div
-             className="text-lg md:text-xl text-muted-foreground mb-8 min-h-[3em]" // Use min-height
+          {/* Part 2: Specialization */}
+          <motion.p // Changed from motion.div to motion.p for semantic correctness
+             className="text-lg md:text-xl text-muted-foreground mb-8" // Increased mb-8 for more space before buttons
              custom={2} // Use index 2 for delay calculation
              variants={textVariants}
            >
@@ -146,11 +146,11 @@ export function HeroSection() {
                    {subheadlineText}
                  </motion.span>
             )}
+          </motion.p>
 
-          </motion.div>
-
+          {/* Part 3: Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4" // Buttons stack vertically on small screens, horizontally on larger
             custom={3} // Use index 3 for delay calculation
             variants={textVariants}
           >
@@ -195,3 +195,4 @@ export function HeroSection() {
   animation: blink 1s step-end infinite;
 }
 */
+
