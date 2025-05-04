@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Mail, FileText } from 'lucide-react';
 import { LaptopMinimal } from 'lucide-react'; // Using LaptopMinimal for a dev theme
+import Link from 'next/link'; // Import Link
 
 const textVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -37,7 +38,7 @@ export function HeroSection() {
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
 
   return (
-    <section className="min-h-[calc(100vh-80px)] flex items-center py-20 md:py-32 bg-gradient-to-br from-background via-background to-slate-900/50 relative overflow-hidden">
+    <section className="min-h-screen flex items-center pt-16 md:pt-20 pb-20 md:pb-32 bg-gradient-to-br from-background via-background to-slate-900/50 relative overflow-hidden"> {/* Adjusted padding-top */}
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         {/* Left Text Content */}
         <motion.div
@@ -85,8 +86,11 @@ export function HeroSection() {
             <Button size="lg" variant="outline" className="hover-glow border-accent text-accent hover:bg-accent hover:text-accent-foreground">
               <FileText className="mr-2 h-5 w-5" /> View Resume
             </Button>
-            <Button size="lg" className="bg-primary text-primary-foreground hover-glow hover:bg-primary/90">
-              <Mail className="mr-2 h-5 w-5" /> Contact Me
+            {/* Update Contact Me button to link to contact page */}
+            <Button size="lg" className="bg-primary text-primary-foreground hover-glow hover:bg-primary/90" asChild>
+              <Link href="/contact">
+                <Mail className="mr-2 h-5 w-5" /> Contact Me
+              </Link>
             </Button>
           </motion.div>
         </motion.div>

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { motion } from 'framer-motion';
@@ -8,7 +9,7 @@ export function FooterSection() {
 
   return (
     <motion.footer
-      className="py-6 border-t border-border bg-background"
+      className="py-6 border-t border-border bg-background mt-auto" // Ensure footer stays at bottom
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5, delay: 0.2 }} // Slight delay after content load

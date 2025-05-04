@@ -1,61 +1,93 @@
+
 "use client";
 
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Code, Database, Terminal, Wrench, BrainCircuit, Network } from 'lucide-react'; // Using BrainCircuit for Languages, Network for Frameworks
+import { Database, Terminal, Wrench, Network } from 'lucide-react'; // Keep Lucide icons for others
 import { SectionWrapper } from '@/components/section-wrapper';
+import { JavaIcon, PythonIcon, PHPIcon, CppIcon, SQLIcon, JSIcon } from '@/components/icons/language-icons'; // Import custom icons
 
 type SkillCategory = {
   title: string;
   icon: React.ElementType;
-  items: string[];
+  items: { name: string; icon?: React.ElementType }[]; // Add optional icon for individual items
 };
 
+// Update skillsData to include custom icons for languages
 const skillsData: SkillCategory[] = [
   {
     title: "Languages",
-    icon: BrainCircuit,
-    items: ["Java", "Python", "PHP", "C++", "SQL", "JavaScript"],
+    icon: Terminal, // Use Terminal as a fallback or category icon
+    items: [
+      { name: "Java", icon: JavaIcon },
+      { name: "Python", icon: PythonIcon },
+      { name: "PHP", icon: PHPIcon },
+      { name: "C++", icon: CppIcon },
+      { name: "SQL", icon: SQLIcon },
+      { name: "JavaScript", icon: JSIcon },
+    ],
   },
   {
     title: "Frameworks",
-    icon: Network, // Replaced Frameworks icon
-    items: ["CodeIgniter 4", "FastAPI", "React", "Node.js", "Flask"],
+    icon: Network,
+    items: [
+        { name: "CodeIgniter 4" },
+        { name: "FastAPI" },
+        { name: "React" },
+        { name: "Node.js" },
+        { name: "Flask" }
+      ],
   },
   {
     title: "Tools",
     icon: Wrench,
-    items: ["Docker", "Git", "TravisCI", "GCP", "VS Code"],
+    items: [
+        { name: "Docker" },
+        { name: "Git" },
+        { name: "TravisCI" },
+        { name: "GCP" },
+        { name: "VS Code" }
+      ],
   },
   {
     title: "Databases & APIs",
     icon: Database,
-    items: ["PostgreSQL", "MySQL", "REST", "Kafka", "Elasticsearch"],
+    items: [
+        { name: "PostgreSQL" },
+        { name: "MySQL" },
+        { name: "REST" },
+        { name: "Kafka" },
+        { name: "Elasticsearch" }
+      ],
   },
 ];
 
 const cardVariants = {
-  hidden: { opacity: 0, y: 20, scale: 0.95 },
+  hidden: { opacity: 0, y: 30, rotateX: -20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    scale: 1,
+    rotateX: 0,
     transition: {
       delay: i * 0.1,
-      duration: 0.4,
+      duration: 0.5,
       ease: "easeOut",
     },
   }),
   hover: {
+    y: -5,
+    rotateX: 5, // Slight tilt effect
     scale: 1.03,
-    boxShadow: "0 10px 20px -5px hsl(var(--primary) / 0.2)",
-    transition: { duration: 0.2 }
+    boxShadow: "0 15px 30px -10px hsl(var(--primary) / 0.25)",
+    transition: { duration: 0.25, ease: "circOut" }
   }
 };
 
 export function SkillsSection() {
   return (
-    <SectionWrapper id="skills" className="bg-gradient-to-b from-background to-slate-900/30">
+    <SectionWrapper id="skills" className="bg-gradient-to-b from-background to-slate-900/30 overflow-hidden">
+        {/* Perspective wrapper for 3D effect */}
+       <div style={{ perspective: '1000px' }}>
       <motion.h2
         className="text-3xl md:text-4xl font-bold mb-12 text-center text-foreground"
         initial={{ opacity: 0, y: 20 }}
@@ -76,18 +108,27 @@ export function SkillsSection() {
             whileHover="hover"
             viewport={{ once: true, amount: 0.2 }}
             variants={cardVariants}
+            className="transform-style-3d" // Enable 3D transformations
           >
-            <Card className="h-full bg-card border-border hover-border-glow flex flex-col">
-              <CardHeader className="flex flex-row items-center gap-4 pb-4">
-                <category.icon className="h-8 w-8 text-accent" />
-                <CardTitle className="text-xl text-foreground">{category.title}</CardTitle>
+            <Card className="h-full bg-card border border-border hover-border-glow flex flex-col overflow-hidden shadow-lg transition-all duration-300 ease-out">
+              <CardHeader className="flex flex-row items-center gap-4 pb-4 pt-5 px-5">
+                 {/* Use category icon */}
+                <div className="p-2 bg-accent/10 rounded-full">
+                    <category.icon className="h-6 w-6 text-accent" />
+                 </div>
+                <CardTitle className="text-lg md:text-xl text-foreground">{category.title}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow pt-0">
-                <ul className="space-y-2">
+              <CardContent className="flex-grow pt-0 px-5 pb-5">
+                <ul className="space-y-3">
                   {category.items.map((item) => (
-                     <li key={item} className="flex items-center text-muted-foreground">
-                      <Terminal className="h-4 w-4 mr-2 text-accent/70" /> {/* Use Terminal for code-like look */}
-                       {item}
+                     <li key={item.name} className="flex items-center text-muted-foreground text-sm md:text-base group">
+                       {/* Use specific item icon if available, otherwise default */}
+                      {item.icon ? (
+                         <item.icon className="h-5 w-5 mr-3 text-accent/80 transition-transform duration-200 group-hover:scale-110" />
+                      ) : (
+                        <Terminal className="h-4 w-4 mr-3 text-accent/70 flex-shrink-0" />
+                      )}
+                       <span className="transition-colors duration-200 group-hover:text-foreground">{item.name}</span>
                      </li>
                   ))}
                 </ul>
@@ -95,6 +136,7 @@ export function SkillsSection() {
             </Card>
           </motion.div>
         ))}
+      </div>
       </div>
     </SectionWrapper>
   );
