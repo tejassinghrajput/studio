@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from 'tailwindcss/plugin'; // Import plugin
 
 export default {
     darkMode: ["class"], // Keep class-based dark mode strategy if needed, but colors are now variable-driven
@@ -109,8 +110,37 @@ export default {
   		animation: {
   			'accordion-down': 'accordion-down 0.2s ease-out',
   			'accordion-up': 'accordion-up 0.2s ease-out'
-  		}
+  		},
+         // Add backdrop blur utility if not already present by default
+         backdropBlur: {
+             xs: '2px',
+             sm: '4px',
+             DEFAULT: '8px',
+             md: '12px',
+             lg: '16px',
+             xl: '24px',
+             '2xl': '40px',
+             '3xl': '64px',
+         }
   	}
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [
+      require("tailwindcss-animate"),
+      // Plugin for glassmorphism helper class
+      plugin(function({ addUtilities }) {
+          addUtilities({
+              '.glass': {
+                  'background': 'rgba(255, 255, 255, 0.1)', // Adjust alpha as needed
+                  'backdrop-filter': 'blur(10px)', // Adjust blur amount
+                  '-webkit-backdrop-filter': 'blur(10px)', // Safari support
+                  'border': '1px solid rgba(255, 255, 255, 0.15)', // Subtle border
+              },
+              '.dark .glass': { // Optional: Adjust for dark mode if needed
+                  'background': 'hsla(var(--card) / 0.6)', // Use card color with alpha
+                  'border': '1px solid hsla(var(--border) / 0.2)', // Use border color with alpha
+              }
+              // Add more variants if necessary
+          })
+      })
+  ],
 } satisfies Config;

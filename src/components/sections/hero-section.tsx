@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Mail, FileText } from 'lucide-react';
 import { LaptopMinimal } from 'lucide-react'; // Using LaptopMinimal for a dev theme
 import Link from 'next/link'; // Import Link
+import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
 
 const textVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -12,7 +13,7 @@ const textVariants = {
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1,
+      delay: i * 0.1 + 0.5, // Adjust delay to start after typing potentially finishes
       duration: 0.5,
       ease: 'easeOut',
     },
@@ -26,7 +27,7 @@ const illustrationVariants = {
     scale: 1,
     rotate: 0,
     transition: {
-      delay: 0.5,
+      delay: 0.5, // Delay illustration slightly
       duration: 0.8,
       type: 'spring',
       stiffness: 100,
@@ -69,15 +70,24 @@ export function HeroSection() {
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
           <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md" // Added drop shadow
-            custom={0}
-            variants={textVariants}
+            className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md h-24 md:h-32" // Added drop shadow and fixed height for typing area
+            // Removed custom/variants for h1 as it's handled by TypeAnimation
           >
-            Hi, I’m Tejas Kumar Singh.
+             <TypeAnimation
+                sequence={[
+                    'Hi, I’m Tejas Kumar Singh.',
+                    1000, // wait 1s
+                ]}
+                wrapper="span"
+                speed={40}
+                cursor={true}
+                repeat={0} // Don't repeat
+                style={{ display: 'inline-block' }}
+             />
           </motion.h1>
           <motion.p
             className="text-xl md:text-2xl text-muted-foreground mb-2"
-            custom={1}
+            custom={1} // Use index 1 for delay calculation
             variants={textVariants}
           >
             Backend Developer | SaaS Business Manager
@@ -86,13 +96,13 @@ export function HeroSection() {
           {/* Animated Subheadline */}
           <motion.div
              className="text-lg md:text-xl text-muted-foreground mb-8 h-16 md:h-12 overflow-hidden" // Fixed height to prevent layout shift
-             custom={2}
+             custom={2} // Use index 2 for delay calculation
              variants={textVariants}
            >
             <motion.span
               initial={{ y: '100%' }}
               animate={{ y: '0%' }}
-              transition={{ delay: 0.3, duration: 0.7, ease: 'circOut' }}
+              transition={{ delay: 1.5, duration: 0.7, ease: 'circOut' }} // Delay slightly more
               className="inline-block"
             >
               {subheadlineText}
@@ -101,7 +111,7 @@ export function HeroSection() {
 
           <motion.div
             className="flex flex-col sm:flex-row gap-4"
-            custom={3}
+            custom={3} // Use index 3 for delay calculation
             variants={textVariants}
           >
             <Button size="lg" variant="outline" className="hover-glow border-accent text-accent hover:bg-accent hover:text-accent-foreground">
