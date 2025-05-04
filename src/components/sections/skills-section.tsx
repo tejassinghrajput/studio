@@ -1,15 +1,18 @@
+// src/components/sections/skills-section.tsx
 "use client";
 
+import React from 'react'; // Ensure React is imported
 import { motion } from 'framer-motion';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Database, Terminal, Wrench, Network, Server, GitBranch, Cloud, Code, FlaskConical, RadioTower, Box } from 'lucide-react'; // Keep Lucide icons for categories
+import { Code as CodeIcon, Network, Wrench, Database as DatabaseIcon } from 'lucide-react'; // Aliased imports
 import { SectionWrapper } from '@/components/section-wrapper';
 import {
   JavaIcon, PythonIcon, PHPIcon, CppIcon, SQLIcon, JSIcon, // Language Icons
   CodeIgniterIcon, FastAPIIcon, ReactIcon, NodeJSIcon, FlaskIcon, // Framework Icons
   DockerIcon, GitIcon, TravisCIIcon, GCPIcon, VSCodeIcon, // Tool Icons
   PostgreSQLIcon, MySQLIcon, KafkaIcon, ElasticsearchIcon, RestAPIIcon // Database & API Icons
-} from '@/components/icons/tech-icons'; // Import consolidated tech icons
+} from '@/components/icons/tech-icons'; // Import updated tech icons
+import { cn } from '@/lib/utils'; // Import cn
 
 type SkillItem = {
   name: string;
@@ -25,7 +28,7 @@ type SkillCategory = {
 const skillsData: SkillCategory[] = [
   {
     title: "Languages",
-    icon: Code, // Category icon
+    icon: CodeIcon, // Use aliased import
     items: [
       { name: "Java", icon: JavaIcon },
       { name: "Python", icon: PythonIcon },
@@ -59,7 +62,7 @@ const skillsData: SkillCategory[] = [
   },
   {
     title: "Databases & APIs",
-    icon: Database, // Category icon
+    icon: DatabaseIcon, // Use aliased import
     items: [
         { name: "PostgreSQL", icon: PostgreSQLIcon },
         { name: "MySQL", icon: MySQLIcon },
@@ -70,33 +73,33 @@ const skillsData: SkillCategory[] = [
   },
 ];
 
+// Removed glitch effect animation variant, replaced with subtle slide-in and hover scale
 const cardVariants = {
-  hidden: { opacity: 0, y: 30, rotateX: -15, rotateY: 5 }, // Add subtle Y rotation
+  hidden: { opacity: 0, y: 30, filter: 'blur(5px)' },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
-    rotateX: 0,
-    rotateY: 0, // Reset rotation
+    filter: 'blur(0px)',
     transition: {
       delay: i * 0.1,
-      duration: 0.6, // Slightly longer duration
-      ease: [0.25, 1, 0.5, 1], // Smoother ease-out cubic
+      duration: 0.6,
+      ease: [0.25, 1, 0.5, 1],
     },
   }),
   hover: {
-    y: -8, // Lift more
-    rotateX: 3, // Slight tilt effect
-    rotateY: -2, // Slight counter-tilt
-    scale: 1.04, // Slightly larger scale
-    boxShadow: "0 20px 35px -10px hsl(var(--primary) / 0.3)", // More pronounced shadow
-    transition: { duration: 0.3, ease: "circOut" }
+    scale: 1.03, // Subtle scale up on hover
+    boxShadow: "0 10px 25px -5px hsl(var(--primary) / 0.3)", // Slightly softer glow
+    transition: {
+        scale: { duration: 0.2, ease: "easeOut" },
+        boxShadow: { duration: 0.2, ease: "easeOut" },
+     }
   }
 };
+
 
 export function SkillsSection() {
   return (
     <SectionWrapper id="skills" className="bg-gradient-to-b from-background to-slate-900/30 overflow-hidden">
-        {/* Perspective wrapper for 3D effect */}
        <div style={{ perspective: '1200px' }}>
       <motion.h2
         className="text-3xl md:text-4xl lg:text-5xl font-bold mb-16 text-center text-foreground tracking-tight" // Increased bottom margin
@@ -108,31 +111,35 @@ export function SkillsSection() {
         Skills & Technology Stack
       </motion.h2>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10"> {/* Increased gap */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-10">
         {skillsData.map((category, index) => (
           <motion.div
             key={category.title}
             custom={index}
             initial="hidden"
             whileInView="visible"
-            whileHover="hover"
+            whileHover="hover" // Apply hover variant
             viewport={{ once: true, amount: 0.1 }} // Trigger earlier
             variants={cardVariants}
             className="transform-style-3d h-full" // Enable 3D + ensure full height for flex
           >
-            <Card className="h-full bg-card border border-border hover-border-glow flex flex-col overflow-hidden shadow-xl transition-all duration-300 ease-out rounded-xl"> {/* Rounded corners */}
-              <CardHeader className="flex flex-row items-center gap-4 pb-4 pt-6 px-6"> {/* Adjusted padding */}
-                 {/* Use category icon */}
-                <div className="p-3 bg-accent/10 rounded-lg shadow-inner"> {/* Adjusted padding, shape, shadow */}
-                    <category.icon className="h-7 w-7 text-accent" /> {/* Larger icon */}
+            {/* Glass effect card */}
+            <Card className={cn(
+                "h-full bg-card/60 backdrop-blur-lg border border-white/10 flex flex-col overflow-hidden shadow-xl transition-all duration-300 ease-out rounded-xl", // Glassmorphism styles
+                "hover:border-primary/30" // Keep subtle border highlight on hover
+             )}>
+              <CardHeader className="flex flex-row items-center gap-4 pb-4 pt-6 px-6">
+                <div className="p-3 bg-primary/10 backdrop-blur-sm rounded-lg shadow-inner border border-white/5"> {/* Glassy icon background */}
+                    <category.icon className="h-7 w-7 text-primary" /> {/* Use primary color for category icon */}
                  </div>
-                <CardTitle className="text-xl md:text-2xl text-foreground font-semibold">{category.title}</CardTitle> {/* Font weight */}
+                <CardTitle className="text-xl md:text-2xl text-foreground font-semibold">{category.title}</CardTitle>
               </CardHeader>
-              <CardContent className="flex-grow pt-2 px-6 pb-6"> {/* Adjusted padding */}
-                <ul className="space-y-4"> {/* Increased spacing */}
+              <CardContent className="flex-grow pt-2 px-6 pb-6">
+                <ul className="space-y-4">
                   {category.items.map((item) => (
-                     <li key={item.name} className="flex items-center text-muted-foreground text-base md:text-lg group transition-colors duration-200 hover:text-foreground"> {/* Larger text, hover color */}
-                       <item.icon className="h-6 w-6 mr-4 text-accent/90 transition-transform duration-300 group-hover:scale-115 flex-shrink-0" /> {/* Larger icon, more space, hover effect */}
+                     <li key={item.name} className="flex items-center text-muted-foreground text-base md:text-lg group transition-colors duration-200 hover:text-foreground">
+                       {/* Render the colorful SVG/Icon */}
+                       <item.icon className="h-6 w-6 mr-4 transition-transform duration-300 group-hover:scale-115 flex-shrink-0" aria-hidden="true" />
                        <span>{item.name}</span>
                      </li>
                   ))}

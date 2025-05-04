@@ -9,6 +9,7 @@ import { Github, ExternalLink, DraftingCompass } from 'lucide-react'; // Using D
 import Link from 'next/link';
 import Image from 'next/image';
 import { SectionWrapper } from '@/components/section-wrapper';
+import { cn } from '@/lib/utils'; // Import cn
 
 type Project = {
   title: string;
@@ -48,19 +49,21 @@ const projectsData: Project[] = [
   },
 ];
 
-// Simplified card animation variants: only entrance animation
+// Slide-in animation variants
 const cardVariants = {
-  hidden: { opacity: 0, y: 50 }, // Keep entrance animation
+  hidden: (direction = 'left') => ({ // Added direction parameter
+      opacity: 0,
+      x: direction === 'left' ? -50 : 50, // Slide from left or right
+   }),
   visible: (i: number) => ({
     opacity: 1,
-    y: 0,
+    x: 0,
     transition: {
       delay: i * 0.15,
       duration: 0.6,
       ease: [0.25, 1, 0.5, 1], // Smoother ease-out cubic
     },
   }),
-   // Removed hover variant
 };
 
 export function ProjectsSection() {
@@ -76,22 +79,24 @@ export function ProjectsSection() {
         Selected Projects
       </motion.h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"> {/* Removed perspective */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {projectsData.map((project, index) => (
           <motion.div
             key={project.title}
-            custom={index}
+            custom={index} // Pass index for staggering delay
             initial="hidden"
             whileInView="visible"
-            // Removed whileHover
             viewport={{ once: true, amount: 0.1 }}
-            variants={cardVariants}
-            className="h-full" // Removed transform-style-3d
+            variants={cardVariants} // Use slide-in variants
+            className="h-full"
           >
-            {/* Use hover-glow and hover-border-glow from globals.css for subtle hover effect */}
-            <Card className="h-full flex flex-col bg-card border border-border overflow-hidden hover-glow hover-border-glow transition-all duration-300 ease-out shadow-md">
+            {/* Removed hover-glow and hover-border-glow */}
+            <Card className={cn(
+                "h-full flex flex-col bg-card/80 backdrop-blur-sm border border-border/20 overflow-hidden shadow-lg transition-all duration-300 ease-out rounded-xl", // Added glass effect styles
+                "hover:shadow-primary/20 hover:border-primary/30" // Subtle hover effect
+              )}>
               <CardHeader className="pb-4 p-5">
-                <div className="aspect-video bg-muted rounded-md mb-4 relative overflow-hidden group">
+                <div className="aspect-video bg-muted/50 rounded-md mb-4 relative overflow-hidden group"> {/* Slightly more transparent bg */}
                    {project.image ? (
                       <Image
                           src={`https://picsum.photos/seed/${project.title.replace(/\s+/g, '-')}/400/225`}
@@ -106,7 +111,7 @@ export function ProjectsSection() {
                        <DraftingCompass className="w-16 h-16 text-muted-foreground" />
                     </div>
                   )}
-                   <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div> {/* Darker gradient */}
                 </div>
                 <CardTitle className="text-xl text-foreground">{project.title}</CardTitle>
               </CardHeader>
@@ -114,7 +119,7 @@ export function ProjectsSection() {
                 <p className="text-muted-foreground mb-4 text-sm md:text-base">{project.description}</p>
                 <div className="flex flex-wrap gap-2">
                   {project.tech.map((tech) => (
-                    <Badge key={tech} variant="secondary" className="bg-muted text-muted-foreground border-none text-xs px-2 py-1">
+                    <Badge key={tech} variant="secondary" className="bg-muted/70 text-muted-foreground border-none text-xs px-2 py-1 backdrop-blur-sm"> {/* Glassy badge */}
                       {tech}
                     </Badge>
                   ))}
@@ -136,7 +141,7 @@ export function ProjectsSection() {
                   </Button>
                 )}
                 {!project.liveLink && project.title.includes("Kafka") && (
-                   <Badge variant="outline" className="text-xs text-muted-foreground border-dashed">Blog Coming Soon</Badge>
+                   <Badge variant="outline" className="text-xs text-muted-foreground border-dashed border-muted-foreground/50">Blog Coming Soon</Badge>
                 )}
               </CardFooter>
             </Card>
