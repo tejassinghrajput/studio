@@ -3,69 +3,98 @@
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { SectionWrapper } from '@/components/section-wrapper';
+import Image from 'next/image'; // Import Image component
+import { Code, Briefcase, Users, Target } from 'lucide-react'; // Import relevant icons
 
 const stats = [
-  "2+ years dev experience",
-  "Backend + Business hybrid",
-  "CodeIgniter / PHP / SQL",
-  "SaaS ops and architecture",
+  { icon: Code, text: "2+ years dev experience" },
+  { icon: Briefcase, text: "Backend + Business Hybrid" },
+  { icon: Users, text: "SaaS Ops & Architecture" },
+  { icon: Target, text: "Focus on Scalability" },
 ];
 
 export function AboutSection() {
+  const fadeIn = (delay = 0, duration = 0.5, direction = 'y', amount = 20) => ({
+    hidden: { opacity: 0, [direction]: amount },
+    visible: {
+      opacity: 1,
+      [direction]: 0,
+      transition: { delay, duration, ease: 'easeOut' },
+    },
+  });
+
   return (
-    <SectionWrapper id="about">
+    <SectionWrapper id="about" className="bg-gradient-to-b from-slate-900/30 to-background overflow-hidden">
       <motion.h2
-        className="text-3xl md:text-4xl font-bold mb-8 text-center text-foreground"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12 text-center text-foreground tracking-tight"
+        variants={fadeIn(0)}
+        initial="hidden"
+        whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
-        transition={{ duration: 0.5 }}
       >
         About Me
       </motion.h2>
 
-      <div className="max-w-3xl mx-auto text-center text-muted-foreground space-y-6 text-lg">
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ delay: 0.1, duration: 0.5 }}
+      <div className="grid md:grid-cols-5 gap-12 lg:gap-16 items-center">
+        {/* Image Column */}
+        <motion.div
+          className="md:col-span-2 flex justify-center"
+          variants={fadeIn(0.2, 0.6, 'x', -30)}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
         >
-          I’m a final-year BTech CSE student with professional experience in backend development, SaaS systems, and startup operations.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ delay: 0.2, duration: 0.5 }}
+          <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden shadow-xl border-4 border-accent/50 hover-glow transition-all duration-300 transform hover:scale-105">
+            <Image
+              src="https://picsum.photos/seed/profile-tejas/400/400" // Replace with your actual image URL
+              alt="Tejas Kumar Singh"
+              layout="fill"
+              objectFit="cover"
+              className="transition-transform duration-500 ease-in-out hover:scale-110"
+              data-ai-hint="professional developer portrait"
+            />
+             <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-50 group-hover:opacity-0 transition-opacity duration-300"></div>
+          </div>
+        </motion.div>
+
+        {/* Text Content Column */}
+        <motion.div
+          className="md:col-span-3 text-left space-y-6"
+           variants={fadeIn(0.4, 0.6, 'x', 30)}
+           initial="hidden"
+           whileInView="visible"
+           viewport={{ once: true, amount: 0.2 }}
         >
-          At ShipGlobal, I work with CodeIgniter 4 to build and maintain robust backend services, using Kafka and Elasticsearch for real-time data integration. Earlier, I interned at Naest, contributing to frontend and backend development in PHP.
-        </motion.p>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, amount: 0.3 }}
-          transition={{ delay: 0.3, duration: 0.5 }}
-        >
-          Outside code, I manage business workflows in a SaaS startup — combining tech with strategy. I thrive at the intersection of backend engineering and product execution.
-        </motion.p>
+          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
+            I'm a final-year BTech CSE student blending <strong className="text-foreground font-medium">backend development skills</strong> with hands-on experience in <strong className="text-foreground font-medium">SaaS operations and business management</strong>. My journey sits at the exciting intersection of technology and strategic execution.
+          </p>
+          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
+            Currently at <strong className="text-accent">ShipGlobal</strong>, I engineer and maintain robust backend services using CodeIgniter 4, leveraging tools like <strong className="text-foreground font-medium">Kafka</strong> and <strong className="text-foreground font-medium">Elasticsearch</strong> for efficient, real-time data integration. Previously, my internship at <strong className="text-accent">Naest</strong> provided foundational experience in full-stack development within a dynamic startup setting.
+          </p>
+          <p className="text-lg lg:text-xl text-muted-foreground leading-relaxed font-light">
+            Beyond coding, I actively manage business workflows in a SaaS startup, bridging the gap between technical implementation and product strategy. I am passionate about building <strong className="text-foreground font-medium">scalable, business-focused software solutions</strong>.
+          </p>
+        </motion.div>
       </div>
 
+      {/* Stats Badges */}
       <motion.div
-        className="mt-12 flex flex-wrap justify-center gap-3"
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.3 }}
-        transition={{ delay: 0.4, duration: 0.5 }}
+        className="mt-16 flex flex-wrap justify-center gap-4"
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.2 }}
+        transition={{ staggerChildren: 0.1, delayChildren: 0.6 }}
       >
         {stats.map((stat, index) => (
-          <Badge
-            key={index}
-            variant="secondary"
-            className="px-4 py-2 text-sm bg-card border border-border hover:bg-muted transition-colors cursor-default"
-          >
-            {stat}
-          </Badge>
+          <motion.div key={index} variants={fadeIn(index * 0.1 + 0.6, 0.4, 'y', 15)}>
+            <Badge
+              variant="secondary"
+              className="px-5 py-3 text-sm md:text-base bg-card border border-border hover:bg-muted transition-colors cursor-default flex items-center gap-2 shadow-md hover-glow"
+            >
+              <stat.icon className="h-5 w-5 text-accent flex-shrink-0" />
+              {stat.text}
+            </Badge>
+          </motion.div>
         ))}
       </motion.div>
     </SectionWrapper>

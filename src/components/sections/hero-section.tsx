@@ -34,21 +34,42 @@ const illustrationVariants = {
   },
 };
 
+// Function to scroll to section
+const scrollToSection = (id: string) => {
+  const element = document.getElementById(id.substring(1)); // Remove #
+  if (element) {
+    const offset = 80; // Adjust offset for fixed navbar height (approx 5rem)
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = element.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
+
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
+};
+
+
 export function HeroSection() {
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
 
   return (
-    <section className="min-h-screen flex items-center pt-16 md:pt-20 pb-20 md:pb-32 bg-gradient-to-br from-background via-background to-slate-900/50 relative overflow-hidden"> {/* Adjusted padding-top */}
+    <section
+      id="home" // Add ID for navigation
+      className="min-h-screen flex items-center pt-16 md:pt-20 pb-20 md:pb-32 bg-gradient-to-br from-background/50 via-transparent to-slate-900/30 relative overflow-hidden" // Adjusted padding-top and background opacity
+    >
       <div className="container mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
         {/* Left Text Content */}
         <motion.div
           initial="hidden"
           animate="visible"
           variants={{}} // Container variant if needed
-          className="flex flex-col items-start text-left"
+          className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
           <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-4 text-foreground"
+            className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md" // Added drop shadow
             custom={0}
             variants={textVariants}
           >
@@ -86,30 +107,32 @@ export function HeroSection() {
             <Button size="lg" variant="outline" className="hover-glow border-accent text-accent hover:bg-accent hover:text-accent-foreground">
               <FileText className="mr-2 h-5 w-5" /> View Resume
             </Button>
-            {/* Update Contact Me button to link to contact page */}
-            <Button size="lg" className="bg-primary text-primary-foreground hover-glow hover:bg-primary/90" asChild>
-              <Link href="/contact">
-                <Mail className="mr-2 h-5 w-5" /> Contact Me
-              </Link>
-            </Button>
+            {/* Update Contact Me button to scroll to contact section */}
+             <Button
+               size="lg"
+               className="bg-primary text-primary-foreground hover-glow hover:bg-primary/90"
+               onClick={() => scrollToSection('#contact')} // Scroll to contact section
+             >
+               <Mail className="mr-2 h-5 w-5" /> Contact Me
+             </Button>
           </motion.div>
         </motion.div>
 
         {/* Right Illustration */}
         <motion.div
-          className="hidden md:flex justify-center items-center"
+          className="hidden md:flex justify-center items-center z-10" // Ensure illustration is above 3D background
           initial="hidden"
           animate="visible"
           variants={illustrationVariants}
         >
           {/* Replace with Lottie or SVG if available */}
-          <LaptopMinimal size={250} className="text-accent opacity-80" />
+          <LaptopMinimal size={250} className="text-accent opacity-80 drop-shadow-lg" />
           {/* Subtle background glow */}
-           <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div>
+           {/* <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div> */}
         </motion.div>
       </div>
-       {/* Optional Starscape/Gradient Overlay */}
-       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-background opacity-50 pointer-events-none"></div>
+       {/* Optional Starscape/Gradient Overlay (moved to background component) */}
+       {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-background opacity-50 pointer-events-none"></div> */}
     </section>
   );
 }
