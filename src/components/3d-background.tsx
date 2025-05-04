@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Suspense, useRef, useMemo } from 'react';
+import React, { Suspense, useRef, useState } from 'react'; // Import useState
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Points, PointMaterial } from '@react-three/drei';
 import * as random from 'maath/random/dist/maath-random.esm';
@@ -8,6 +8,7 @@ import * as THREE from 'three';
 
 function Stars(props: any) {
   const ref = useRef<THREE.Points>(null!);
+  // Use useState here, ensure it's imported
   const [sphere] = useState(() => random.inSphere(new Float32Array(5000), { radius: 1.5 }));
 
   useFrame((state, delta) => {
