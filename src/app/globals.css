@@ -4,44 +4,55 @@
 
 @layer base {
   :root {
-    /* --- Managed by ThemeProvider --- */
-    /* Color variables will be dynamically injected here */
+    /* --- Dark Theme Defaults (Applied Immediately) --- */
+    /* Base Colors (Example: Dark Slate/Blue Theme) */
+    --background: 217 33% 11%; /* BlueGray-900 */
+    --foreground: 210 40% 98%; /* Slate-50 */
+    --card: 217 33% 17%; /* Darker Card */
+    --card-foreground: 210 40% 98%; /* Slate-50 */
+    --popover: 217 33% 14%; /* Darker Popover */
+    --popover-foreground: 210 40% 98%; /* Slate-50 */
+    --primary: 203 92% 60%; /* Sky-400 */
+    --primary-foreground: 217 33% 11%; /* Contrast for Sky-400 */
+    --secondary: 217 33% 25%; /* Muted Secondary */
+    --secondary-foreground: 210 40% 98%; /* Slate-50 */
+    --muted: 217 33% 25%; /* Same as Secondary for default dark */
+    --muted-foreground: 215 20% 65%; /* Slate-400 */
+    --accent: 203 92% 60%; /* Sky-400 */
+    --accent-foreground: 217 33% 11%; /* Contrast for Sky-400 */
+    --destructive: 0 63% 31%; /* Dark Red */
+    --destructive-foreground: 210 40% 98%; /* Slate-50 */
+    --border: 217 33% 20%; /* Slate-800 */
+    --input: 217 33% 22%; /* Slightly Lighter Input */
+    --ring: 203 92% 60%; /* Sky-400 */
+    --hover-glow: 203 80% 70%; /* Lighter Sky-300 */
+
+    /* Chart Colors (Example Dark Theme Palette) */
+    --chart-1: 203 92% 60%; /* Sky-400 */
+    --chart-2: 160 70% 45%; /* Teal */
+    --chart-3: 45 90% 55%;  /* Gold */
+    --chart-4: 270 80% 70%; /* Purple */
+    --chart-5: 0 70% 60%;   /* Red */
+
+    /* Sidebar colors - default to main dark theme derived values */
+    --sidebar-background: 217 33% 17%; /* --card */
+    --sidebar-foreground: 210 40% 98%; /* --foreground */
+    --sidebar-border: 217 33% 20%; /* --border */
+    --sidebar-ring: 203 92% 60%; /* --ring */
+    --sidebar-accent: 203 92% 60%; /* --accent */
+    --sidebar-accent-foreground: 217 33% 11%; /* --accent-foreground */
 
     /* --- Static Variables --- */
     --radius: 0.5rem; /* Keep radius */
 
     /*
-    Removed hardcoded HSL values.
-    These will be set by ThemeProvider:
-    --background
-    --foreground
-    --card
-    --card-foreground
-    --popover
-    --popover-foreground
-    --primary
-    --primary-foreground
-    --secondary
-    --secondary-foreground
-    --muted
-    --muted-foreground
-    --accent
-    --accent-foreground
-    --destructive
-    --destructive-foreground
-    --border
-    --input
-    --ring
-    --hover-glow
-    --chart-1
-    --chart-2
-    --chart-3
-    --chart-4
-    --chart-5
+      NOTE: ThemeProvider will override these variables with
+      the specific theme loaded from localStorage or selected by the user.
+      These defaults ensure the dark theme is applied immediately on load.
     */
   }
 
-  /* No .dark class needed if default is dark and managed by HSL */
+  /* No .dark class needed here as :root defaults are dark */
 }
 
 @layer base {

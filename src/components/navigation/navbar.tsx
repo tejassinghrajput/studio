@@ -4,7 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Menu, X, Code } from "lucide-react";
+import { Menu, X, Code } from "lucide-react"; // X is no longer needed here for the button, but keep if used elsewhere
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -136,17 +136,23 @@ export function Navbar() {
                 <span className="sr-only">Open menu</span>
               </Button>
             </SheetTrigger>
+            {/* SheetContent handles its own close button */}
             <SheetContent side="right" className="w-[280px] bg-card border-l border-border p-6 flex flex-col">
+               {/* The default SheetContent includes a close button, so no need for an extra one */}
+               {/* SheetTitle provides accessible title */}
                <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+
+               {/* Header inside the sheet */}
                <div className="flex justify-between items-center mb-6 pb-4 border-b border-border">
                   <button onClick={() => scrollToSection("#home")} className="flex items-center gap-2 text-lg font-bold text-foreground" >
                       <Code className="h-6 w-6 text-accent" />
                       Tejas K. Singh
                   </button>
-                 <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-muted-foreground">
-                   <X className="h-6 w-6" />
-                    <span className="sr-only">Close menu</span>
-                  </Button>
+                  {/* REMOVED explicit close button */}
+                  {/* <Button variant="ghost" size="icon" onClick={() => setIsOpen(false)} className="text-muted-foreground">
+                    <X className="h-6 w-6" />
+                     <span className="sr-only">Close menu</span>
+                   </Button> */}
                </div>
 
                <div className="flex flex-col space-y-3">

@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from '@/components/navigation/navbar';
 import { FooterSection } from '@/components/sections/footer-section';
 import { ScrollToTopButton } from '@/components/scroll-to-top';
-// Removed DynamicBackgroundLoader import
 import { ThemeProvider } from '@/context/theme-context'; // Import ThemeProvider
+import { Preloader } from '@/components/preloader'; // Import Preloader
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -38,17 +38,19 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
+    // Default to dark theme immediately to prevent white flash
     <html lang="en" className="dark">
       <body
         className={cn(
-          'antialiased flex flex-col min-h-screen relative bg-background',
+          'antialiased flex flex-col min-h-screen relative bg-background', // Apply bg-background here
           spaceGrotesk.variable,
           inter.variable,
           firaCode.variable
         )}
       >
+        {/* Preloader will cover content initially */}
+        <Preloader />
         <ThemeProvider> {/* Wrap content with ThemeProvider */}
-          {/* Removed DynamicBackgroundLoader component */}
           <Navbar />
           <div className="relative z-10 flex-grow"> {/* Ensure content has z-index */}
             <main className="flex-grow">

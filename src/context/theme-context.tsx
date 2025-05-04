@@ -1,7 +1,7 @@
 // src/context/theme-context.tsx
 'use client';
 
-import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode, useCallback, useMemo } from 'react'; // Import useMemo
 
 // --- Predefined Themes ---
 // HSL values as strings: "H S% L%"
@@ -207,12 +207,42 @@ const deriveColors = (primary: string, accent: string, background: string): Part
 
 
 
-// Default Theme - aligned with initial globals.css
+// Default Theme - Use HSL values directly from globals.css initial dark theme
 const defaultTheme: Theme = {
   name: 'Default Dark',
   cssVars: {
-    ...deriveColors('203 92% 60%', '203 92% 60%', '217 33% 11%'), // Derive from Sky-400 and BlueGray-900
-    '--radius': '0.5rem', // Keep static radius
+    '--background': '217 33% 11%',
+    '--foreground': '210 40% 98%',
+    '--card': '217 33% 17%',
+    '--card-foreground': '210 40% 98%',
+    '--popover': '217 33% 14%',
+    '--popover-foreground': '210 40% 98%',
+    '--primary': '203 92% 60%',
+    '--primary-foreground': '217 33% 11%',
+    '--secondary': '217 33% 25%',
+    '--secondary-foreground': '210 40% 98%',
+    '--muted': '217 33% 25%',
+    '--muted-foreground': '215 20% 65%',
+    '--accent': '203 92% 60%',
+    '--accent-foreground': '217 33% 11%',
+    '--destructive': '0 63% 31%',
+    '--destructive-foreground': '210 40% 98%',
+    '--border': '217 33% 20%',
+    '--input': '217 33% 22%',
+    '--ring': '203 92% 60%',
+    '--radius': '0.5rem',
+    '--hover-glow': '203 80% 70%',
+    '--chart-1': '203 92% 60%',
+    '--chart-2': '160 70% 45%',
+    '--chart-3': '45 90% 55%',
+    '--chart-4': '270 80% 70%',
+    '--chart-5': '0 70% 60%',
+    '--sidebar-background': '217 33% 17%',
+    '--sidebar-foreground': '210 40% 98%',
+    '--sidebar-border': '217 33% 20%',
+    '--sidebar-ring': '203 92% 60%',
+    '--sidebar-accent': '203 92% 60%',
+    '--sidebar-accent-foreground': '217 33% 11%',
   }
 };
 
@@ -369,19 +399,21 @@ type ThemeContextType = {
   applyTheme: (themeName: string) => void;
   applyCustomTheme: (colors: CustomColors) => void;
   customColors: CustomColors;
-//   setCustomColors: React.Dispatch<React.SetStateAction<CustomColors>>; // Removed - custom colors are applied explicitly
 };
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: ReactNode }) => {
-  const [currentTheme, setCurrentTheme] = useState<Theme | null>(null);
+  // Initialize state with default theme to avoid null initially
+  const [currentTheme, setCurrentTheme] = useState<Theme>(defaultTheme);
   // State to hold the *currently applied* custom colors (loaded from storage or set by user)
   const [appliedCustomColors, setAppliedCustomColors] = useState<CustomColors>({
     primary: '#38BDF8', // Default Sky-400
     accent: '#38BDF8', // Default Sky-400 (match primary initially)
     background: '#0F172A', // Default BlueGray-900
   });
+  const [isThemeInitialized, setIsThemeInitialized] = useState(false);
+
 
   // Apply theme CSS variables to the root element
    const applyCssVariables = useCallback((vars: Partial<ThemeVariables>) => {
@@ -389,16 +421,9 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
     const root = document.documentElement;
     if (!root) return;
 
-    // Clear existing theme variables first? Optional, but can prevent conflicts.
-    // Object.keys(defaultTheme.cssVars).forEach(key => root.style.removeProperty(key));
-
     Object.entries(vars).forEach(([key, value]) => {
       if (value) {
-         // Assume value is already a valid CSS HSL string or other value like '0.5rem'
          root.style.setProperty(key, value);
-      } else {
-         // Optionally remove the property if the value is null/undefined
-         // root.style.removeProperty(key);
       }
     });
    }, []);
@@ -450,37 +475,62 @@ export const ThemeProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
       if (typeof window === 'undefined') return; // Ensure runs client-side only
 
+      // --- APPLY DEFAULT DARK THEME IMMEDIATELY ---
+      // This happens synchronously on first render before localStorage check
+      // We use the defaultTheme object defined above which holds the dark theme vars
+      applyCssVariables(defaultTheme.cssVars);
+      setCurrentTheme(defaultTheme); // Set initial state correctly
+      // Set initial custom colors based on the default theme for the color pickers
+      // Convert HSL back to Hex for the picker state (or store default hex)
+      setAppliedCustomColors({
+          primary: '#38BDF8', // Sky-400
+          accent: '#38BDF8', // Sky-400
+          background: '#0F172A', // BlueGray-900
+       });
+
+      // --- NOW CHECK LOCAL STORAGE AND OVERRIDE IF NECESSARY ---
       const savedThemeName = localStorage.getItem('selectedTheme');
       const savedCustomColors = localStorage.getItem('customThemeColors');
 
       if (savedCustomColors) {
          try {
            const parsedColors: CustomColors = JSON.parse(savedCustomColors);
-           // Apply directly, don't just set state, as applyCustomTheme handles state update and CSS vars
-           applyCustomTheme(parsedColors);
+           applyCustomTheme(parsedColors); // Apply and save custom theme
          } catch (e) {
             console.error("Failed to parse custom theme colors from storage.", e);
-            applyTheme(defaultTheme.name); // Fallback to default
+            // Default dark already applied, no fallback needed here
          }
-      } else if (savedThemeName) {
-        // Check if the saved theme name is valid before applying
+      } else if (savedThemeName && savedThemeName !== defaultTheme.name) {
+        // Only apply if it's different from the already applied default
         const isValidTheme = predefinedThemes.some(t => t.name === savedThemeName);
-        applyTheme(isValidTheme ? savedThemeName : defaultTheme.name);
-      } else {
-        applyTheme(defaultTheme.name); // Apply default theme if nothing saved
+        if (isValidTheme) {
+            applyTheme(savedThemeName); // Apply the saved predefined theme
+        }
       }
+      // Mark initialization complete
+      setIsThemeInitialized(true);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []); // Run only once on mount
 
 
+  // The context value depends on the currentTheme state, which is updated by the effects
+  const contextValue = useMemo(() => ({
+    themes: predefinedThemes,
+    currentTheme: currentTheme, // Use the state variable
+    applyTheme,
+    applyCustomTheme,
+    customColors: appliedCustomColors
+  }), [currentTheme, applyTheme, applyCustomTheme, appliedCustomColors]);
+
+
+  // Optionally, prevent rendering children until theme is initialized to avoid FOUC
+  // if (!isThemeInitialized && typeof window !== 'undefined') {
+  //   return null; // Or a loading spinner, but CSS default should handle FOUC
+  // }
+
   return (
-    <ThemeContext.Provider value={{
-        themes: predefinedThemes,
-        currentTheme,
-        applyTheme,
-        applyCustomTheme,
-        customColors: appliedCustomColors // Provide the *applied* custom colors
-     }}>
+    <ThemeContext.Provider value={contextValue}>
       {children}
     </ThemeContext.Provider>
   );
