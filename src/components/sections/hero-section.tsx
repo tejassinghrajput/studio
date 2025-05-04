@@ -1,7 +1,7 @@
 // src/components/sections/hero-section.tsx
 "use client";
 
-import { useState, useEffect, useContext } from 'react'; // Import useContext
+import { useContext } from 'react'; // Import useContext
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Mail, FileText } from 'lucide-react';
@@ -10,14 +10,14 @@ import Link from 'next/link'; // Import Link
 import { cn } from '@/lib/utils'; // Import cn
 import { AppStateContext } from '@/context/app-state-context'; // Import context
 
-// Animation variants remain the same
+// Animation variants
 const textVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1 + 0.5, // Start delay slightly later after typing completes
+      delay: i * 0.1 + 0.5, // Staggered delay for elements
       duration: 0.5,
       ease: 'easeOut',
     },
@@ -39,7 +39,7 @@ const illustrationVariants = {
   },
 };
 
-// Function to scroll to section (keep this as it is)
+// Function to scroll to section
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id.substring(1)); // Remove #
   if (element) {
@@ -58,39 +58,11 @@ const scrollToSection = (id: string) => {
 
 
 export function HeroSection() {
-  const fullText = "Hi, I am Tejas Kumar Singh."; // Corrected name
-  const [displayedText, setDisplayedText] = useState('');
-  const [showCursor, setShowCursor] = useState(true);
   const { isPreloaderFinished } = useContext(AppStateContext); // Get preloader state from context
+  const headlineText = "Hi, I am Tejas Kumar Singh.";
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
 
-  // Typewriter effect logic
-  useEffect(() => {
-     // Only start typing if the preloader is finished
-     if (!isPreloaderFinished) {
-       // Set initial state before preloader finishes if needed
-       setDisplayedText('');
-       setShowCursor(true); // Keep cursor visible initially
-       return;
-     };
-
-    let index = 0;
-    // Start cursor visible when typing starts
-    setShowCursor(true);
-    const typingInterval = setInterval(() => {
-      if (index < fullText.length) {
-        setDisplayedText((prev) => prev + fullText.charAt(index));
-        index++;
-      } else {
-        clearInterval(typingInterval);
-        // Hide cursor after typing finishes
-         setShowCursor(false); // Hide cursor on completion
-      }
-    }, 80); // Adjust typing speed (milliseconds per character)
-
-    return () => clearInterval(typingInterval); // Cleanup on unmount
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isPreloaderFinished, fullText]); // Add fullText to dependency array
+  // No longer need typewriter effect logic
 
   return (
     <section
@@ -106,17 +78,14 @@ export function HeroSection() {
           variants={{}} // Container variant if needed
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
-          {/* Custom Typewriter Heading - Added min-height */}
-          <h1
-             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md min-h-[3em] flex items-center flex-wrap" // Use min-height, allow wrap
+          {/* Direct Heading Rendering - Removed min-height */}
+          <motion.h1
+             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md" // Removed min-h-[3em]
+             custom={0} // Use index 0 for delay calculation
+             variants={textVariants}
            >
-             <span className="mr-1">{displayedText}</span> {/* Add margin to separate cursor */}
-             {/* Blinking Cursor Span - styled with CSS */}
-             <span className={cn(
-               "inline-block w-1 md:w-1.5 h-10 md:h-12 lg:h-14 bg-primary animate-blink", // Adjusted height for different sizes
-               !showCursor && "hidden" // Hide if needed based on state
-             )}></span>
-          </h1>
+             {headlineText} {/* Directly render the full text */}
+          </motion.h1>
 
           {/* Part 1: Role Description */}
           <motion.p
@@ -128,17 +97,17 @@ export function HeroSection() {
           </motion.p>
 
           {/* Part 2: Specialization */}
-          <motion.p // Changed from motion.div to motion.p for semantic correctness
-             className="text-lg md:text-xl text-muted-foreground mb-10" // Increased mb-10 (from mb-8) for more space before buttons
+          <motion.p
+             className="text-lg md:text-xl text-muted-foreground mb-10" // Keep increased mb-10 for space before buttons
              custom={2} // Use index 2 for delay calculation
              variants={textVariants}
            >
-             {/* Conditionally render span only when preloader is finished to avoid layout shift */}
+             {/* Conditionally render span only when preloader is finished */}
             {isPreloaderFinished && (
                  <motion.span
                    initial={{ y: '100%' }}
                    animate={{ y: '0%' }}
-                   transition={{ delay: 1.5 + (fullText.length * 0.08), duration: 0.7, ease: 'circOut' }} // Delay slightly more, considering typing time
+                   transition={{ delay: 0.8, duration: 0.7, ease: 'circOut' }} // Adjust delay if needed
                    className="inline-block"
                  >
                    {subheadlineText}
@@ -181,18 +150,3 @@ export function HeroSection() {
     </section>
   );
 }
-
-// Add CSS for blinking cursor in globals.css or a specific CSS module
-/*
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.animate-blink {
-  animation: blink 1s step-end infinite;
-}
-*/
-
-
-
