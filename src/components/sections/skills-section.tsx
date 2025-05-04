@@ -1,3 +1,4 @@
+// src/components/sections/skills-section.tsx
 "use client";
 
 import React from 'react'; // Ensure React is imported
@@ -72,7 +73,7 @@ const skillsData: SkillCategory[] = [
   },
 ];
 
-// Glitch effect inspired animation variant
+// Removed glitch effect animation variant, replaced with subtle slide-in and hover scale
 const cardVariants = {
   hidden: { opacity: 0, y: 30, filter: 'blur(5px)' },
   visible: (i: number) => ({
@@ -86,21 +87,9 @@ const cardVariants = {
     },
   }),
   hover: {
-    // Glitch-like micro-movements and color shifts
-    x: [0, -1, 1, -1, 1, 0], // Random x-shifts
-    y: [0, 1, -1, 1, -1, 0], // Random y-shifts
-    filter: [
-      'blur(0px) hue-rotate(0deg)',
-      'blur(0.5px) hue-rotate(5deg)',
-      'blur(0px) hue-rotate(-5deg)',
-      'blur(0.5px) hue-rotate(0deg)',
-    ],
-    scale: 1.02, // Slight scale up
-    boxShadow: "0 10px 25px -5px hsl(var(--primary) / 0.4)", // Enhanced glow
+    scale: 1.03, // Subtle scale up on hover
+    boxShadow: "0 10px 25px -5px hsl(var(--primary) / 0.3)", // Slightly softer glow
     transition: {
-        x: { duration: 0.15, repeat: Infinity, repeatType: "loop", ease: "linear" },
-        y: { duration: 0.15, repeat: Infinity, repeatType: "loop", ease: "linear" },
-        filter: { duration: 0.15, repeat: Infinity, repeatType: "loop", ease: "linear" },
         scale: { duration: 0.2, ease: "easeOut" },
         boxShadow: { duration: 0.2, ease: "easeOut" },
      }
@@ -129,7 +118,7 @@ export function SkillsSection() {
             custom={index}
             initial="hidden"
             whileInView="visible"
-            whileHover="hover"
+            whileHover="hover" // Apply hover variant
             viewport={{ once: true, amount: 0.1 }} // Trigger earlier
             variants={cardVariants}
             className="transform-style-3d h-full" // Enable 3D + ensure full height for flex

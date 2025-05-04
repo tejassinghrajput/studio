@@ -1,19 +1,22 @@
+// src/components/sections/hero-section.tsx
 "use client";
 
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Mail, FileText } from 'lucide-react';
 import { LaptopMinimal } from 'lucide-react'; // Using LaptopMinimal for a dev theme
 import Link from 'next/link'; // Import Link
-import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
+import { cn } from '@/lib/utils'; // Import cn
 
+// Animation variants remain the same
 const textVariants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1 + 0.5, // Adjust delay to start after typing potentially finishes
+      delay: i * 0.1 + 0.5, // Start delay slightly later after typing completes
       duration: 0.5,
       ease: 'easeOut',
     },
@@ -35,7 +38,7 @@ const illustrationVariants = {
   },
 };
 
-// Function to scroll to section
+// Function to scroll to section (keep this as it is)
 const scrollToSection = (id: string) => {
   const element = document.getElementById(id.substring(1)); // Remove #
   if (element) {
@@ -54,7 +57,30 @@ const scrollToSection = (id: string) => {
 
 
 export function HeroSection() {
+  const fullText = "Hi, I am Tejhas Kumar Singh.";
+  const [displayedText, setDisplayedText] = useState('');
+  const [showCursor, setShowCursor] = useState(true);
   const subheadlineText = "Specializing in scalable backend systems, business-focused software, and secure APIs.";
+
+  // Typewriter effect logic
+  useEffect(() => {
+    let index = 0;
+    const typingInterval = setInterval(() => {
+      if (index < fullText.length) {
+        setDisplayedText((prev) => prev + fullText.charAt(index));
+        index++;
+      } else {
+        clearInterval(typingInterval);
+        // Optionally hide cursor after typing finishes, or keep it blinking
+         // setShowCursor(false); // Example: hide cursor
+      }
+    }, 80); // Adjust typing speed (milliseconds per character)
+
+    return () => clearInterval(typingInterval); // Cleanup on unmount
+  }, []); // Empty dependency array ensures it runs only once on mount
+
+  // Blinking cursor effect logic (using CSS is more performant)
+  // We'll use CSS for the blinking
 
   return (
     <section
@@ -69,22 +95,19 @@ export function HeroSection() {
           variants={{}} // Container variant if needed
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
-          <motion.h1
-            className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md h-24 md:h-32" // Added drop shadow and fixed height for typing area
-            // Removed custom/variants for h1 as it's handled by TypeAnimation
-          >
-             <TypeAnimation
-                sequence={[
-                    'Hi, I’m Tejas Kumar Singh.',
-                    1000, // wait 1s
-                ]}
-                wrapper="span"
-                speed={40}
-                cursor={true}
-                repeat={0} // Don't repeat
-                style={{ display: 'inline-block' }}
-             />
-          </motion.h1>
+          {/* Custom Typewriter Heading */}
+          <h1
+             className="text-4xl md:text-6xl font-bold mb-4 text-foreground drop-shadow-md h-24 md:h-32 flex items-center" // Fixed height for typing area, flex to align cursor
+           >
+             <span>{displayedText}</span>
+             {/* Blinking Cursor Span - styled with CSS */}
+             <span className={cn(
+               "inline-block w-1 md:w-1.5 h-10 md:h-14 bg-primary ml-1 animate-blink",
+               !showCursor && "hidden" // Hide if needed based on state
+             )}></span>
+          </h1>
+
+          {/* Rest of the content with staggered animations */}
           <motion.p
             className="text-xl md:text-2xl text-muted-foreground mb-2"
             custom={1} // Use index 1 for delay calculation
@@ -102,7 +125,7 @@ export function HeroSection() {
             <motion.span
               initial={{ y: '100%' }}
               animate={{ y: '0%' }}
-              transition={{ delay: 1.5, duration: 0.7, ease: 'circOut' }} // Delay slightly more
+              transition={{ delay: 1.5 + (fullText.length * 0.08), duration: 0.7, ease: 'circOut' }} // Delay slightly more, considering typing time
               className="inline-block"
             >
               {subheadlineText}
@@ -137,12 +160,20 @@ export function HeroSection() {
         >
           {/* Replace with Lottie or SVG if available */}
           <LaptopMinimal size={250} className="text-accent opacity-80 drop-shadow-lg" />
-          {/* Subtle background glow */}
-           {/* <div className="absolute -right-10 top-1/2 transform -translate-y-1/2 w-64 h-64 bg-accent/10 rounded-full blur-3xl pointer-events-none"></div> */}
         </motion.div>
       </div>
-       {/* Optional Starscape/Gradient Overlay (moved to background component) */}
-       {/* <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-transparent via-transparent to-background opacity-50 pointer-events-none"></div> */}
     </section>
   );
 }
+
+// Add CSS for blinking cursor in globals.css or a specific CSS module
+/*
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+*/
