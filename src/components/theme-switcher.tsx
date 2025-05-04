@@ -16,56 +16,27 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
+import type { CustomColors } from '@/context/theme-context'; // Import CustomColors type
 
 // Helper to convert Hex to HSL string "H S% L%"
-function hexToHSLString(hex: string): string | null {
-  hex = hex.replace(/^#/, '');
-  if (!/^[0-9A-F]{6}$/i.test(hex)) {
-    console.error("Invalid HEX color:", hex);
-    return null; // Invalid hex
-  }
-
-  let r = parseInt(hex.substring(0, 2), 16) / 255;
-  let g = parseInt(hex.substring(2, 4), 16) / 255;
-  let b = parseInt(hex.substring(4, 6), 16) / 255;
-
-  let max = Math.max(r, g, b);
-  let min = Math.min(r, g, b);
-  let h = 0, s = 0, l = (max + min) / 2;
-
-  if (max !== min) {
-    let d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
-    }
-    h /= 6;
-  }
-
-  h = Math.round(h * 360);
-  s = Math.round(s * 100);
-  l = Math.round(l * 100);
-
-  return `${h} ${s}% ${l}%`;
-}
-
+// Removed as it's handled within the context now
 
 export function ThemeSwitcher() {
-  const { themes, currentTheme, applyTheme, setCustomColors, customColors } = useTheme();
-  const [tempCustomColors, setTempCustomColors] = React.useState(customColors);
+  const { themes, currentTheme, applyTheme, applyCustomTheme, customColors } = useTheme();
+  // Use customColors (the applied ones) as the initial state for temp colors
+  const [tempCustomColors, setTempCustomColors] = React.useState<CustomColors>(customColors);
 
-  const handleColorChange = (variableName: keyof typeof customColors, value: string) => {
+  const handleColorChange = (variableName: keyof CustomColors, value: string) => {
     setTempCustomColors(prev => ({ ...prev, [variableName]: value }));
   };
 
+  // Modified: Directly call applyCustomTheme from context
   const handleApplyCustomTheme = () => {
-    setCustomColors(tempCustomColors); // Update context and apply immediately
+    applyCustomTheme(tempCustomColors); // Call the context function to apply the theme
   };
 
+  // Effect to sync temp colors if the applied customColors change (e.g., loading from storage)
   React.useEffect(() => {
-     // Ensure temp colors sync if customColors change externally (e.g., load from storage)
      setTempCustomColors(customColors);
    }, [customColors]);
 
@@ -89,9 +60,10 @@ export function ThemeSwitcher() {
             >
               <span>{theme.name}</span>
               <div className="flex gap-1">
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(${theme.cssVars['--primary']})` }}></div>
-                <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(${theme.cssVars['--accent']})` }}></div>
-                <div className="w-3 h-3 rounded-full border" style={{ backgroundColor: `hsl(${theme.cssVars['--background']})` }}></div>
+                 {/* Ensure cssVars keys exist before accessing */}
+                 {theme.cssVars['--primary'] && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(${theme.cssVars['--primary']})` }}></div>}
+                 {theme.cssVars['--accent'] && <div className="w-3 h-3 rounded-full" style={{ backgroundColor: `hsl(${theme.cssVars['--accent']})` }}></div>}
+                 {theme.cssVars['--background'] && <div className="w-3 h-3 rounded-full border" style={{ backgroundColor: `hsl(${theme.cssVars['--background']})` }}></div>}
               </div>
             </DropdownMenuItem>
           ))}
@@ -129,6 +101,7 @@ export function ThemeSwitcher() {
                 className="h-8 w-full p-1"
               />
            </div>
+           {/* Button now calls the modified handler */}
            <Button onClick={handleApplyCustomTheme} size="sm" className="w-full mt-2">
              Apply Custom Colors
            </Button>
