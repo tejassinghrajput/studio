@@ -7,9 +7,9 @@ import Image from 'next/image'; // Import Image component
 import { Code, Briefcase, Users, Target } from 'lucide-react'; // Import relevant icons
 
 const stats = [
-  { icon: Code, text: "2+ years dev experience" },
-  { icon: Briefcase, text: "Backend + Business Hybrid" },
-  { icon: Users, text: "SaaS Ops & Architecture" },
+  { icon: Code, text: "7+ Months dev experience" },
+  { icon: Briefcase, text: "Backend + DSA Expertise" },
+  { icon: Users, text: "Software Operations & Architecture" },
   { icon: Target, text: "Focus on Scalability" },
 ];
 
