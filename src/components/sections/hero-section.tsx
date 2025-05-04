@@ -58,7 +58,7 @@ const scrollToSection = (id: string) => {
 
 
 export function HeroSection() {
-  const fullText = "Hi, I am Tejas Kumar Singh."; // Updated name
+  const fullText = "Hi, I am Tejas Kumar Singh."; // Corrected name
   const [displayedText, setDisplayedText] = useState('');
   const [showCursor, setShowCursor] = useState(true);
   const { isPreloaderFinished } = useContext(AppStateContext); // Get preloader state from context
@@ -89,10 +89,7 @@ export function HeroSection() {
     }, 80); // Adjust typing speed (milliseconds per character)
 
     return () => clearInterval(typingInterval); // Cleanup on unmount
-  }, [isPreloaderFinished]); // Rerun effect when preloader state changes
-
-  // Blinking cursor effect logic (using CSS is more performant)
-  // We'll use CSS for the blinking
+  }, [isPreloaderFinished, fullText]); // Add fullText to dependency array
 
   return (
     <section
@@ -131,7 +128,7 @@ export function HeroSection() {
 
           {/* Part 2: Specialization */}
           <motion.p // Changed from motion.div to motion.p for semantic correctness
-             className="text-lg md:text-xl text-muted-foreground mb-8" // Increased mb-8 for more space before buttons
+             className="text-lg md:text-xl text-muted-foreground mb-10" // Increased mb-10 (from mb-8) for more space before buttons
              custom={2} // Use index 2 for delay calculation
              variants={textVariants}
            >
@@ -195,4 +192,5 @@ export function HeroSection() {
   animation: blink 1s step-end infinite;
 }
 */
+
 
