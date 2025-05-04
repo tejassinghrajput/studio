@@ -93,7 +93,7 @@ export function HeroSection() {
             custom={1} // Use index 1 for delay calculation
             variants={textVariants}
           >
-            Backend Developer | SaaS Business Manager
+            Backend Developer
           </motion.p>
 
           {/* Part 2: Specialization */}
