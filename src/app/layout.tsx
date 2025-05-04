@@ -6,7 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from '@/components/navigation/navbar';
 import { FooterSection } from '@/components/sections/footer-section';
 import { ScrollToTopButton } from '@/components/scroll-to-top';
-import { DynamicBackgroundLoader } from '@/components/dynamic-background-loader'; // Import the loader
+// Removed DynamicBackgroundLoader import
 import { ThemeProvider } from '@/context/theme-context'; // Import ThemeProvider
 
 const spaceGrotesk = Space_Grotesk({
@@ -48,9 +48,9 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider> {/* Wrap content with ThemeProvider */}
-          <DynamicBackgroundLoader /> {/* Add 3D background loader */}
+          {/* Removed DynamicBackgroundLoader component */}
           <Navbar />
-          <div className="relative z-10 flex-grow"> {/* Ensure content is above background */}
+          <div className="relative z-10 flex-grow"> {/* Ensure content has z-index */}
             <main className="flex-grow">
               {children}
             </main>
