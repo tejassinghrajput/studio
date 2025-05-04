@@ -42,7 +42,8 @@ export default function RootLayout({
   return (
     // Default to dark theme immediately to prevent white flash
     // Removed className="dark" to let ThemeProvider handle it
-    <html lang="en" suppressHydrationWarning> {/* Add suppressHydrationWarning */}
+    // Ensure no extra whitespace directly inside <html>
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           'antialiased flex flex-col min-h-screen relative bg-background w-full', // Ensure body takes full width
