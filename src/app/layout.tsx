@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
 import { Space_Grotesk, Inter, Fira_Code } from 'next/font/google';
-import dynamic from 'next/dynamic'; // Keep dynamic here for the loader component
+// Removed dynamic import related to 3D background
 import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from "@/components/ui/toaster";
 import { Navbar } from '@/components/navigation/navbar'; // Import Navbar
 import { FooterSection } from '@/components/sections/footer-section'; // Import Footer
 import { ScrollToTopButton } from '@/components/scroll-to-top'; // Import ScrollToTopButton
-import { DynamicBackgroundLoader } from '@/components/dynamic-background-loader'; // Import the new client component
+// Removed import for DynamicBackgroundLoader
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -41,15 +41,15 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body
         className={cn(
-          'antialiased flex flex-col min-h-screen relative', // Add relative positioning
+          'antialiased flex flex-col min-h-screen relative bg-background', // Ensure background color is set
           spaceGrotesk.variable,
           inter.variable,
           firaCode.variable
         )}
       >
-        <DynamicBackgroundLoader /> {/* Use the client component wrapper */}
+        {/* Removed DynamicBackgroundLoader */}
         <Navbar /> {/* Add Navbar */}
-        <div className="relative z-10 flex-grow"> {/* Ensure content is above the background */}
+        <div className="relative z-10 flex-grow"> {/* Ensure content is above potential background layers */}
           <main className="flex-grow"> {/* Main content area */}
             {children}
           </main>
