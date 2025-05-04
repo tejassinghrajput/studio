@@ -89,6 +89,7 @@ export function HeroSection() {
     }, 80); // Adjust typing speed (milliseconds per character)
 
     return () => clearInterval(typingInterval); // Cleanup on unmount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isPreloaderFinished, fullText]); // Add fullText to dependency array
 
   return (
@@ -105,7 +106,7 @@ export function HeroSection() {
           variants={{}} // Container variant if needed
           className="flex flex-col items-start text-left z-10" // Ensure text is above 3D background
         >
-          {/* Custom Typewriter Heading - Removed fixed height for responsiveness */}
+          {/* Custom Typewriter Heading - Added min-height */}
           <h1
              className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 text-foreground drop-shadow-md min-h-[3em] flex items-center flex-wrap" // Use min-height, allow wrap
            >
@@ -192,5 +193,6 @@ export function HeroSection() {
   animation: blink 1s step-end infinite;
 }
 */
+
 
 
