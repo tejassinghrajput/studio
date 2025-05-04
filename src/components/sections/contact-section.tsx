@@ -19,6 +19,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { toast } from '@/hooks/use-toast'; // Use the toast hook
 import { Github, Linkedin, Mail, FileText } from 'lucide-react';
 import { SectionWrapper } from '@/components/section-wrapper';
+import { Card } from '@/components/ui/card'; // Import Card component
 
 const contactFormSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
